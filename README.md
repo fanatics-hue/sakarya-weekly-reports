@@ -1,7 +1,7 @@
 # Sakarya Weekly Report Dashboards
 
 Dashboard interattivi **per singolo report settimanale (DPR)** del progetto
-Sakarya Gas Field Development – Phase 3 (NFPS COMP3b), produzione **Tenaris Confab**
+Sakarya Gas Field Development – Phase 3, produzione **Tenaris Confab**
 (Pindamonhangaba, Brasile). IQS S.r.l. obo Saipem.
 
 > Diverso dal repository **`sakarya-dashboard`** (fanatics-hue.github.io/sakarya-dashboard),
