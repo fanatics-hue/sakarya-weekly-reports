@@ -37,9 +37,16 @@ h1{font-size:34px;font-weight:800;letter-spacing:.5px;line-height:1.15;margin-bo
 .chip.warn{color:var(--amber);border-color:rgba(255,202,40,.25);}
 .chip.bad{color:var(--red);border-color:rgba(255,71,87,.25);}
 .ropen{margin-top:18px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--teal);display:flex;align-items:center;gap:8px;}
-footer{margin-top:56px;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
-.fl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--muted);}
-.iqs-logo{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:3px;background:linear-gradient(90deg,var(--teal),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+footer{margin-top:56px;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;}
+.footer-brand{display:flex;align-items:center;gap:14px;}
+.footer-logo{background:#fff;border-radius:8px;padding:7px 11px;display:flex;align-items:center;flex-shrink:0;box-shadow:0 0 0 1px rgba(255,255,255,.06);}
+.footer-logo img{height:34px;display:block;}
+.footer-co-name{font-size:13px;font-weight:700;color:var(--text);letter-spacing:.3px;}
+.footer-co-sub{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);margin-top:3px;}
+.footer-co-sub a{color:var(--teal);text-decoration:none;}
+.footer-co-sub a:hover{text-decoration:underline;}
+.footer-meta{text-align:right;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--muted);line-height:1.85;}
+.footer-meta b{color:var(--text);}
 .ext{color:var(--blue);text-decoration:none;}
 .ext:hover{text-decoration:underline;}
 </style>
@@ -87,8 +94,18 @@ footer{margin-top:56px;padding-top:24px;border-top:1px solid var(--border);displ
   <!-- /AUTO:REPORT_CARDS -->
 
   <footer>
-    <div class="fl">IQS S.r.l. · SAKARYA GAS FIELD · PHASE 3 · WEEKLY REPORT DASHBOARDS · TENARIS CONFAB</div>
-    <div style="display:flex;align-items:center;gap:8px;"><div class="iqs-logo">IQS</div><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)">obo SAIPEM</span></div>
+    <div class="footer-brand">
+      <div class="footer-logo"><img src="assets/iqs-logo.jpg" alt="IQS — Worldwide Inspection Company"></div>
+      <div>
+        <div class="footer-co-name">IQS S.r.l. — Worldwide Inspection Company</div>
+        <div class="footer-co-sub">Third-Party Inspection obo Saipem · <a href="https://www.iqs-ww.com" target="_blank">www.iqs-ww.com</a></div>
+      </div>
+    </div>
+    <div class="footer-meta">
+      <div>SAKARYA GAS FIELD DEVELOPMENT — PHASE 3 · WEEKLY REPORT DASHBOARDS</div>
+      <div>Client: <b>Saipem S.p.A.</b> · COMP3 — Qatar Gas · Manufacturer: <b>Tenaris Confab</b>, Brazil</div>
+      <div>Job 033781 · PO 1534963 dtd. 21.10.2025</div>
+    </div>
   </footer>
 </div>
 </body>
