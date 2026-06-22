@@ -2,7 +2,7 @@
 
 Dashboard interattivi **per singolo report settimanale (DPR)** del progetto
 Sakarya Gas Field Development – Phase 3 (NFPS COMP3b), produzione **Tenaris Confab**
-(Pindamonhangaba, Brasile). IQS S.r.l. obo Saipem · COMP3 — Qatar Gas.
+(Pindamonhangaba, Brasile). IQS S.r.l. obo Saipem · COMP3.
 
 > Diverso dal repository **`sakarya-dashboard`** (fanatics-hue.github.io/sakarya-dashboard),
 > che è il dashboard *Overall Status* combinato. Qui ogni cartella è **un report** di una
