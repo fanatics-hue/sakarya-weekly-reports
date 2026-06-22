@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sakarya Gas Field — Weekly Report Dashboards</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060d1a;--s1:#0c1929;--s2:#102035;--border:rgba(0,168,255,0.12);--blue:#00a8ff;--teal:#00e5c8;--green:#00e676;--amber:#ffca28;--red:#ff4757;--text:#ddeeff;--muted:#4a7090;--r:12px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+.bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(0,168,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,168,255,.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0;}
+.bg-glow{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0;}
+.bg-glow-1{width:620px;height:620px;top:-220px;left:-160px;background:rgba(0,229,200,.07);}
+.bg-glow-2{width:520px;height:520px;bottom:-160px;right:-110px;background:rgba(0,168,255,.06);}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:64px 32px 80px;}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--teal);margin-bottom:14px;}
+h1{font-size:34px;font-weight:800;letter-spacing:.5px;line-height:1.15;margin-bottom:10px;background:linear-gradient(90deg,var(--teal),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sub{font-size:14px;color:var(--muted);max-width:680px;line-height:1.6;margin-bottom:40px;}
+.sl{display:flex;align-items:center;gap:14px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--teal);margin:0 0 22px;}
+.sl::before{content:'';width:20px;height:2px;background:linear-gradient(90deg,var(--teal),var(--green));border-radius:1px;}
+.sl::after{content:'';flex:1;height:1px;background:var(--border);}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;}
+.rcard{display:block;text-decoration:none;background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:24px 26px;position:relative;overflow:hidden;transition:transform .2s,border-color .2s;}
+.rcard:hover{transform:translateY(-4px);border-color:rgba(0,229,200,.35);}
+.rcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent,linear-gradient(90deg,var(--teal),var(--green)));}
+.rcard.pm{--accent:linear-gradient(90deg,var(--blue),var(--teal));}
+.rtag{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.rdisc{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;padding:3px 10px;border-radius:5px;margin-bottom:14px;}
+.rdisc.coat{background:rgba(0,229,200,.1);color:var(--teal);border:1px solid rgba(0,229,200,.2);}
+.rdisc.mill{background:rgba(0,168,255,.1);color:var(--blue);border:1px solid rgba(0,168,255,.2);}
+.rtitle{font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.rweek{font-size:13px;color:var(--muted);margin-bottom:18px;}
+.rmeta{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{font-family:'JetBrains Mono',monospace;font-size:9px;padding:3px 9px;border-radius:5px;background:var(--s2);color:var(--muted);border:1px solid var(--border);}
+.chip.ok{color:var(--green);border-color:rgba(0,230,118,.25);}
+.chip.warn{color:var(--amber);border-color:rgba(255,202,40,.25);}
+.chip.bad{color:var(--red);border-color:rgba(255,71,87,.25);}
+.ropen{margin-top:18px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--teal);display:flex;align-items:center;gap:8px;}
+footer{margin-top:56px;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.fl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--muted);}
+.iqs-logo{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:3px;background:linear-gradient(90deg,var(--teal),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ext{color:var(--blue);text-decoration:none;}
+.ext:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow bg-glow-1"></div>
+<div class="bg-glow bg-glow-2"></div>
+<div class="wrap">
+  <div class="eyebrow">IQS S.r.l · obo Saipem · COMP3 — Qatar Gas</div>
+  <h1>Sakarya Gas Field — Weekly Report Dashboards</h1>
+  <div class="sub">Per-report (DPR) inspection dashboards for Phase 3 production at Tenaris Confab, Pindamonhangaba (Brazil). Each card opens the interactive dashboard built from that week's weekly inspection report. For the combined live <b>Overall Status</b> tracker, see <a class="ext" href="https://fanatics-hue.github.io/sakarya-dashboard/" target="_blank">sakarya-dashboard</a>.</div>
+
+  <!-- AUTO:REPORT_CARDS -->
+  <div class="sl">Available Reports</div>
+  <div class="grid">
+
+    <a class="rcard" href="SC26-3-SPM-CNF-DPR-017C%20(WEEK%2025)/SC26-3-SPM-CNF-DPR-017C_WEEK25_dashboard.html">
+      <div class="rtag">SC26-3-SPM-CNF-DPR-017C</div>
+      <div class="rdisc coat">3LPP COATING</div>
+      <div class="rtitle">3LPP Coating — Mill PQT &amp; Early Pipes</div>
+      <div class="rweek">Week 25 · June 2026</div>
+      <div class="rmeta">
+        <span class="chip ok">PST 36/36</span>
+        <span class="chip ok">0 Areas of Concern</span>
+        <span class="chip ok">NCR-006 retest PASS</span>
+      </div>
+      <div class="ropen">OPEN DASHBOARD →</div>
+    </a>
+
+    <a class="rcard pm" href="SC26-3-SPM-CNF-DPR-020%20(WEEK%2025)/SC26-3-SPM-CNF-DPR-020_WEEK25_dashboard.html">
+      <div class="rtag">SC26-3-SPM-CNF-DPR-020</div>
+      <div class="rdisc mill">PIPE MILL</div>
+      <div class="rtitle">Pipe Mill — rWPQT &amp; Mass Production</div>
+      <div class="rweek">Week 25 · June 2026</div>
+      <div class="rmeta">
+        <span class="chip">Mass prod. active</span>
+        <span class="chip bad">14 CVN rejections</span>
+        <span class="chip warn">7 NCR open</span>
+      </div>
+      <div class="ropen">OPEN DASHBOARD →</div>
+    </a>
+
+  </div>
+  <!-- /AUTO:REPORT_CARDS -->
+
+  <footer>
+    <div class="fl">IQS S.r.l. · SAKARYA GAS FIELD · PHASE 3 · WEEKLY REPORT DASHBOARDS · TENARIS CONFAB</div>
+    <div style="display:flex;align-items:center;gap:8px;"><div class="iqs-logo">IQS</div><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)">obo SAIPEM</span></div>
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sakarya Gas Field — Week 25 · Pipe Mill · SC26-3-SPM-CNF-DPR-020</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060d1a;--s1:#0c1929;--s2:#102035;--s3:#152844;
+  --border:rgba(0,168,255,0.12);--blue:#00a8ff;--teal:#00e5c8;
+  --green:#00e676;--amber:#ffca28;--red:#ff4757;--purple:#7c4dff;
+  --text:#ddeeff;--muted:#4a7090;--r:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;font-size:14px;}
+.bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(0,168,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,168,255,.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0;}
+.bg-glow{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;}
+.bg-glow-1{width:600px;height:600px;top:-200px;left:-150px;background:rgba(0,168,255,.07);}
+.bg-glow-2{width:500px;height:500px;bottom:-150px;right:-100px;background:rgba(0,229,200,.05);}
+.wrap{position:relative;z-index:1;}
+
+header{display:flex;justify-content:space-between;align-items:center;padding:0 52px;height:72px;border-bottom:1px solid var(--border);background:rgba(6,13,26,.92);backdrop-filter:blur(20px);position:sticky;top:0;z-index:200;}
+.brand{display:flex;flex-direction:column;gap:2px;}
+.brand-title{font-size:15px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:linear-gradient(90deg,var(--blue),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.brand-sub{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+.hdr-right{display:flex;align-items:center;gap:24px;}
+.live-badge{display:flex;align-items:center;gap:8px;background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.2);border-radius:24px;padding:5px 14px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--green);}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.8s ease-in-out infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,230,118,.7);}70%{box-shadow:0 0 0 7px rgba(0,230,118,0);}100%{box-shadow:0 0 0 0 rgba(0,230,118,0);}}
+.hdr-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);}
+.hdr-date b{color:var(--text);}
+
+nav{display:flex;padding:0 52px;border-bottom:1px solid var(--border);background:rgba(6,13,26,.7);gap:2px;overflow-x:auto;}
+.tab{padding:13px 22px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue);}
+
+main{padding:36px 52px;}
+.tab-content{display:none;animation:fadeIn .3s ease;}
+.tab-content.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+.sl{display:flex;align-items:center;gap:14px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--blue);margin-bottom:22px;}
+.sl::before{content:'';width:20px;height:2px;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:1px;flex-shrink:0;}
+.sl::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.kpi{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:22px 26px 18px;position:relative;overflow:hidden;transition:transform .2s,border-color .2s;}
+.kpi:hover{transform:translateY(-3px);border-color:rgba(0,168,255,.3);}
+.kpi-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.kpi-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.kpi-icon{font-size:18px;opacity:.6;}
+.kpi-val{font-size:52px;font-weight:800;line-height:1;margin-bottom:4px;background:var(--grad,linear-gradient(135deg,var(--blue),var(--teal)));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.kpi-sub{font-size:11px;color:var(--muted);}
+.kpi-bar{position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--grad,linear-gradient(90deg,var(--blue),var(--teal)));}
+.kpi.g-green{--grad:linear-gradient(135deg,#00e676,#00bfa5);}
+.kpi.g-amber{--grad:linear-gradient(135deg,#ffca28,#ff9800);}
+.kpi.g-red{--grad:linear-gradient(135deg,#ff4757,#ff6b81);}
+.kpi.g-purple{--grad:linear-gradient(135deg,#7c4dff,#e040fb);}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.g3{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px;}
+.g1{margin-bottom:16px;}
+.card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:26px;transition:border-color .2s;}
+.card:hover{border-color:rgba(0,168,255,.25);}
+.card-ey{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:4px;}
+.card-title{font-size:17px;font-weight:700;color:var(--text);margin-bottom:20px;}
+
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px;}
+.info-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;position:relative;overflow:hidden;}
+.info-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent-bar,linear-gradient(90deg,var(--blue),var(--teal)));}
+.info-card.a1{--accent-bar:linear-gradient(90deg,var(--blue),var(--teal));}
+.info-card.a2{--accent-bar:linear-gradient(90deg,var(--teal),var(--green));}
+.info-card.a3{--accent-bar:linear-gradient(90deg,var(--amber),#ff9800);}
+.info-card.a4{--accent-bar:linear-gradient(90deg,var(--purple),#e040fb);}
+.info-card.a5{--accent-bar:linear-gradient(90deg,var(--green),var(--teal));}
+.info-card.a6{--accent-bar:linear-gradient(90deg,var(--red),#ff6b81);}
+.info-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.info-val{font-size:13px;font-weight:600;color:var(--text);line-height:1.4;}
+.info-sub{font-size:11px;color:var(--muted);margin-top:3px;}
+
+.pr{display:flex;align-items:center;gap:12px;margin-bottom:11px;}
+.pr-lbl{font-size:11px;color:var(--muted);width:170px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pr-track{flex:1;height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;}
+.pr-fill{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+.pr-val{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text);width:46px;text-align:right;flex-shrink:0;}
+
+.sstrip{display:flex;border:1px solid var(--border);background:var(--s1);border-radius:var(--r);overflow:hidden;margin-bottom:16px;}
+.ss{flex:1;padding:18px 22px;border-right:1px solid var(--border);position:relative;}
+.ss:last-child{border-right:none;}
+.ss::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--sc,linear-gradient(90deg,var(--blue),var(--teal)));}
+.ss.sc-g{--sc:linear-gradient(90deg,var(--green),var(--teal));}
+.ss.sc-a{--sc:linear-gradient(90deg,var(--amber),#ff9800);}
+.ss.sc-r{--sc:linear-gradient(90deg,var(--red),#ff6b81);}
+.ss-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.ss-val{font-size:18px;font-weight:800;background:var(--sc,linear-gradient(90deg,var(--blue),var(--teal)));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+.tw{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:16px;}
+.tbar{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--border);}
+.tbar-title{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
+table{width:100%;border-collapse:collapse;}
+thead th{background:rgba(0,168,255,.05);padding:10px 16px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);}
+tbody tr{border-bottom:1px solid rgba(0,168,255,.05);transition:background .15s;}
+tbody tr:hover{background:rgba(0,168,255,.04);}
+tbody td{padding:9px 16px;font-size:12px;color:var(--text);}
+.badge{display:inline-block;padding:2px 9px;border-radius:4px;font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;font-weight:500;text-transform:uppercase;}
+.bg{background:rgba(0,230,118,.1);color:var(--green);border:1px solid rgba(0,230,118,.2);}
+.ba{background:rgba(255,202,40,.1);color:var(--amber);border:1px solid rgba(255,202,40,.2);}
+.br{background:rgba(255,71,87,.1);color:var(--red);border:1px solid rgba(255,71,87,.2);}
+.bp{background:rgba(124,77,255,.1);color:var(--purple);border:1px solid rgba(124,77,255,.2);}
+.bb{background:rgba(0,168,255,.1);color:var(--blue);border:1px solid rgba(0,168,255,.2);}
+
+.timeline{display:flex;flex-direction:column;gap:0;position:relative;padding-left:28px;}
+.timeline::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,var(--blue),var(--teal),var(--green));border-radius:1px;}
+.tl-item{position:relative;padding:0 0 22px 20px;}
+.tl-dot{position:absolute;left:-21px;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid var(--bg);background:var(--dc,var(--blue));}
+.tl-year{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--dc,var(--blue));text-transform:uppercase;margin-bottom:3px;}
+.tl-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.tl-desc{font-size:11px;color:var(--muted);line-height:1.5;}
+.tl-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase;margin-top:5px;background:rgba(0,168,255,.1);color:var(--blue);border:1px solid rgba(0,168,255,.2);}
+.tl-badge.done{background:rgba(0,230,118,.1);color:var(--green);border-color:rgba(0,230,118,.2);}
+.tl-badge.active{background:rgba(255,202,40,.1);color:var(--amber);border-color:rgba(255,202,40,.2);}
+.tl-badge.fail{background:rgba(255,71,87,.1);color:var(--red);border-color:rgba(255,71,87,.2);}
+
+.ncr-item{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px;border-left:3px solid var(--red);}
+.ncr-item.resolved{border-left-color:var(--green);}
+.ncr-item.amber{border-left-color:var(--amber);}
+.ncr-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.ncr-num{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--muted);margin-bottom:4px;}
+.ncr-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.ncr-desc{font-size:10px;color:var(--muted);line-height:1.5;}
+
+footer{border-top:1px solid var(--border);background:rgba(6,13,26,.95);padding:28px 52px;margin-top:40px;display:flex;justify-content:space-between;align-items:center;}
+.footer-left{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--muted);}
+.iqs-logo{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:3px;background:linear-gradient(90deg,var(--blue),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow bg-glow-1"></div>
+<div class="bg-glow bg-glow-2"></div>
+<div class="wrap">
+
+<header>
+  <div class="brand">
+    <div class="brand-title">Sakarya Gas Field — Phase 3 · Pipe Mill (Tenaris Confab)</div>
+    <div class="brand-sub">SC26-3-SPM-CNF-DPR-020 · Week 25 · Inspection Report</div>
+  </div>
+  <div class="hdr-right">
+    <div class="live-badge"><div class="live-dot"></div>MASS PRODUCTION</div>
+    <div class="hdr-date">Report Period: <b>Week 25 · Jun 2026</b></div>
+  </div>
+</header>
+
+<nav>
+  <div class="tab active" onclick="showTab('overview',this)">Overview</div>
+  <div class="tab" onclick="showTab('production',this)">Mass Production</div>
+  <div class="tab" onclick="showTab('qualification',this)">MPQT / rWPQT</div>
+  <div class="tab" onclick="showTab('lab',this)">Lab Tests</div>
+  <div class="tab" onclick="showTab('concerns',this)">Areas of Concern</div>
+  <div class="tab" onclick="showTab('ncr',this)">NCR Register</div>
+  <div class="tab" onclick="showTab('project',this)">Project Info</div>
+</nav>
+
+<main>
+
+<!-- ===== OVERVIEW ===== -->
+<div id="overview" class="tab-content active">
+  <div class="sl">Production Status — Week 25</div>
+
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-top"><div class="kpi-label">Mass Production</div><div class="kpi-icon">🏭</div></div>
+      <div class="kpi-val" style="font-size:30px;padding-top:8px">ACTIVE</div>
+      <div class="kpi-sub">Started Jun 02, 2026 — ongoing</div>
+      <div class="kpi-bar"></div>
+    </div>
+    <div class="kpi g-red">
+      <div class="kpi-top"><div class="kpi-label">Open NCRs</div><div class="kpi-icon">🔴</div></div>
+      <div class="kpi-val">7</div>
+      <div class="kpi-sub">of 12 total tracked</div>
+      <div class="kpi-bar"></div>
+    </div>
+    <div class="kpi g-amber">
+      <div class="kpi-top"><div class="kpi-label">Areas of Concern</div><div class="kpi-icon">⚠️</div></div>
+      <div class="kpi-val">3</div>
+      <div class="kpi-sub">Steel damage — U-press / bolt / stamp</div>
+      <div class="kpi-bar"></div>
+    </div>
+    <div class="kpi g-red">
+      <div class="kpi-top"><div class="kpi-label">CVN Rejections</div><div class="kpi-icon">🧪</div></div>
+      <div class="kpi-val">14</div>
+      <div class="kpi-sub">Fusion Line (OD/ID/Root) this week</div>
+      <div class="kpi-bar"></div>
+    </div>
+  </div>
+
+  <div class="sstrip">
+    <div class="ss"><div class="ss-lbl">Contract No.</div><div class="ss-val" style="margin-top:4px">1534963</div></div>
+    <div class="ss sc-g"><div class="ss-lbl">MPQT/WPQT Start</div><div class="ss-val" style="margin-top:4px">Feb 09, 2026</div></div>
+    <div class="ss sc-g"><div class="ss-lbl">Mass Prod. Start</div><div class="ss-val" style="margin-top:4px">Jun 02, 2026</div></div>
+    <div class="ss sc-a"><div class="ss-lbl">rWPQT OD Repair</div><div class="ss-val" style="margin-top:4px">Approved</div></div>
+    <div class="ss sc-r"><div class="ss-lbl">rWPQT ID Repair</div><div class="ss-val" style="margin-top:4px">No activity</div></div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-ey">Weekly Summary</div>
+      <div class="card-title">Mass Production — Key Activities</div>
+      <div class="alert" style="border-radius:8px;padding:16px 18px;margin-bottom:12px;background:rgba(0,168,255,.05);border:1px solid rgba(0,168,255,.2);border-left:3px solid var(--blue)">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;color:var(--blue)">🏭 MASS PRODUCTION ONGOING</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">U&amp;O · Tack Weld · SAWL ID/OD · MCE · Hydro · NDT</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.6">Full pipe-mill sequence running. Inside &amp; outside weld seams inspected 100% per new ITP revision — no defects noted at those stations this week.</div>
+      </div>
+      <div class="alert" style="border-radius:8px;padding:16px 18px;margin-bottom:12px;background:rgba(255,71,87,.05);border:1px solid rgba(255,71,87,.2);border-left:3px solid var(--red)">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;color:var(--red)">🧪 CVN — FUSION LINE REJECTIONS</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">14 pipes rejected at Fusion Line (OD / ID / Root)</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.6">CVN testing re-started this week; incomplete heat set. See Lab Tests tab for the rejected pipe / heat list. One Base-Metal Longitudinal Tensile also rejected (Pipe 26.4.7993).</div>
+      </div>
+      <div class="alert" style="border-radius:8px;padding:16px 18px;margin-bottom:0;background:rgba(255,202,40,.05);border:1px solid rgba(255,202,40,.2);border-left:3px solid var(--amber)">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;color:var(--amber)">⚠ STEEL DAMAGE — AREAS OF CONCERN</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Mechanical damage on base metal / ID surface</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.6">“U”-press marks, bolt marks and stamp damage identified. Email sent to Tenaris requesting traceability control; TPI team built a control table. See Areas of Concern tab.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-ey">Attendees — Week 25</div>
+      <div class="card-title">Inspection Team</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:var(--s2);border-radius:6px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:12px;font-weight:600;color:var(--text)">Pedro Eugenio · Elbert Morais</div><div style="font-size:10px;color:var(--muted)">IQS obo Saipem</div></div>
+          <span class="badge bb">IQS</span>
+        </div>
+        <div style="background:var(--s2);border-radius:6px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:12px;font-weight:600;color:var(--text)">Kayan Silva · Robson Honorato · Jose Antônio</div><div style="font-size:10px;color:var(--muted)">IQS obo Saipem</div></div>
+          <span class="badge bb">IQS</span>
+        </div>
+        <div style="background:var(--s2);border-radius:6px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:12px;font-weight:600;color:var(--text)">Mateus Larangeira · João Paulo</div><div style="font-size:10px;color:var(--muted)">IQS obo Saipem</div></div>
+          <span class="badge bb">IQS</span>
+        </div>
+        <div style="background:var(--s2);border-radius:6px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:12px;font-weight:600;color:var(--text)">Aruã Pelissario · Nilson Coutinho</div><div style="font-size:10px;color:var(--muted)">RINA</div></div>
+          <span class="badge bt">RINA</span>
+        </div>
+        <div style="background:var(--s2);border-radius:6px;padding:10px 14px;">
+          <div style="font-size:9px;color:var(--blue);font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-bottom:5px">TENARIS CONFAB · TP OTC</div>
+          <div style="font-size:11px;color:var(--muted)">Bruna Pereira · Felipe Cunha · Teresa Bras · Saulo Silva · J. Patricio Monteiro (TP OTC)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MASS PRODUCTION ===== -->
+<div id="production" class="tab-content">
+  <div class="sl">Mass Production — Process &amp; Parameters</div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-ey">Production Parameters — Witnessed</div>
+      <div class="card-title">Within Qualified Range</div>
+      <div style="background:var(--s2);border-radius:6px;padding:14px 16px;margin-bottom:12px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--green);margin-bottom:6px">✔ MECHANICAL COLD EXPANSION (MCE)</div>
+        <div style="font-size:12px;color:var(--text);line-height:1.7">Witnessed: <b>0.84% – 1.05%</b><br>Qualified rate: 0.75% – 1.15% <span class="badge bg">In range</span></div>
+      </div>
+      <div style="background:var(--s2);border-radius:6px;padding:14px 16px;margin-bottom:12px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--green);margin-bottom:6px">✔ HYDROSTATIC TESTING</div>
+        <div style="font-size:12px;color:var(--text);line-height:1.7">Min required: 6760 PSI / 10 s<br>Witnessed min: <b>6769 PSI</b> · max: <b>6790 PSI</b> <span class="badge bg">OK</span></div>
+      </div>
+      <div style="background:var(--s2);border-radius:6px;padding:14px 16px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--amber);margin-bottom:6px">⚠ TACK WELDING — RADIAL OFFSET</div>
+        <div style="font-size:12px;color:var(--text);line-height:1.7">Found: 0.1 mm – 1.1 mm (spec max 2.0 mm)<br>See NCR-009 (Tack Weld parameters)</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-ey">Pipe Mill Process Legend</div>
+      <div class="card-title">Production Flow</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;"><div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--blue);margin-bottom:2px">U&amp;O</div><div style="font-size:10px;color:var(--muted)">U &amp; O Forming</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;"><div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--teal);margin-bottom:2px">TW</div><div style="font-size:10px;color:var(--muted)">Tack Welding</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;"><div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--blue);margin-bottom:2px">SAWL ID</div><div style="font-size:10px;color:var(--muted)">Inside Welding</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;"><div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--teal);margin-bottom:2px">SAWL OD</div><div style="font-size:10px;color:var(--muted)">Outside Welding</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;"><div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--amber);margin-bottom:2px">UTPA</div><div style="font-size:10px;color:var(--muted)">Phased Array UT</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;"><div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--red);margin-bottom:2px">FL</div><div style="font-size:10px;color:var(--muted)">Fluoroscopic / TOFD</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;"><div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--green);margin-bottom:2px">MCE</div><div style="font-size:10px;color:var(--muted)">Mechanical Cold Exp.</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;"><div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--green);margin-bottom:2px">HT</div><div style="font-size:10px;color:var(--muted)">Hydrostatic Test</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;"><div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--amber);margin-bottom:2px">MT</div><div style="font-size:10px;color:var(--muted)">Magnetic Particle</div></div>
+        <div style="background:var(--s2);border-radius:6px;padding:7px 10px;"><div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--purple);margin-bottom:2px">LEMS</div><div style="font-size:10px;color:var(--muted)">Laser Dimensional</div></div>
+      </div>
+      <div style="margin-top:12px;background:rgba(255,202,40,.05);border:1px solid rgba(255,202,40,.15);border-radius:6px;padding:10px 14px">
+        <div style="font-size:10px;color:var(--muted);line-height:1.6"><b style="color:var(--amber)">LEMS:</b> first week of operation — many Out-of-Roundness (OoR) values outside specification (see Areas of Concern). Straightness re-work started this Week 25 and is ongoing.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card g1">
+    <div class="card-ey">NDT — In-House &amp; Offline</div>
+    <div class="card-title">Inspection Stations — Week 25</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+      <div style="background:var(--s2);border-radius:6px;padding:12px 14px"><div style="font-size:9px;color:var(--blue);font-family:'JetBrains Mono',monospace;margin-bottom:4px">AUT / TOFD (IN-HOUSE)</div><div style="font-size:10px;color:var(--muted);line-height:1.6">Std pipe F-558691 · calibration start of shift, check every 4 h</div></div>
+      <div style="background:var(--s2);border-radius:6px;padding:12px 14px"><div style="font-size:9px;color:var(--blue);font-family:'JetBrains Mono',monospace;margin-bottom:4px">UTPA / MANUAL UT</div><div style="font-size:10px;color:var(--muted);line-height:1.6">Std pipe F-558150 / 560560 · check every 4 h</div></div>
+      <div style="background:var(--s2);border-radius:6px;padding:12px 14px"><div style="font-size:9px;color:var(--blue);font-family:'JetBrains Mono',monospace;margin-bottom:4px">X-RAY (RT)</div><div style="font-size:10px;color:var(--muted);line-height:1.6">Pipe ends (300 mm) + repaired areas · IQI W12, Duplex D9, compensation rule applied</div></div>
+      <div style="background:var(--s2);border-radius:6px;padding:12px 14px"><div style="font-size:9px;color:var(--blue);font-family:'JetBrains Mono',monospace;margin-bottom:4px">UT PIPE ENDS + DHC</div><div style="font-size:10px;color:var(--muted);line-height:1.6">200 mm full circumference · DHC detection phased array + manual confirmation</div></div>
+      <div style="background:var(--s2);border-radius:6px;padding:12px 14px"><div style="font-size:9px;color:var(--blue);font-family:'JetBrains Mono',monospace;margin-bottom:4px">MPI</div><div style="font-size:10px;color:var(--muted);line-height:1.6">Bevel, weld ends, full length, repair · black light ≥1000 µw/cm², white ≤10 Lux</div></div>
+      <div style="background:var(--s2);border-radius:6px;padding:12px 14px"><div style="font-size:9px;color:var(--green);font-family:'JetBrains Mono',monospace;margin-bottom:4px">WELD SEAM VISUAL</div><div style="font-size:10px;color:var(--muted);line-height:1.6">ID &amp; OD inspected 100% per new ITP — no defect noted this week</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== QUALIFICATION ===== -->
+<div id="qualification" class="tab-content">
+  <div class="sl">MPQT / WPQT &amp; Repair Qualification</div>
+
+  <div class="kpi-grid">
+    <div class="kpi g-green">
+      <div class="kpi-top"><div class="kpi-label">MPQT AF Pipes</div><div class="kpi-icon">✅</div></div>
+      <div class="kpi-val">4</div>
+      <div class="kpi-sub">2096 · 2097 · 2098 · 2240 — concluded</div>
+      <div class="kpi-bar"></div>
+    </div>
+    <div class="kpi g-green">
+      <div class="kpi-top"><div class="kpi-label">MPQT AC Pipes</div><div class="kpi-icon">✅</div></div>
+      <div class="kpi-val">4</div>
+      <div class="kpi-sub">2099 · 2100 · 2101 · 2243 — concluded</div>
+      <div class="kpi-bar"></div>
+    </div>
+    <div class="kpi g-green">
+      <div class="kpi-top"><div class="kpi-label">rWPQT OD</div><div class="kpi-icon">🔧</div></div>
+      <div class="kpi-val">✓</div>
+      <div class="kpi-sub">Macro · Side bend · CVN approved</div>
+      <div class="kpi-bar"></div>
+    </div>
+    <div class="kpi g-amber">
+      <div class="kpi-top"><div class="kpi-label">rWPQT ID</div><div class="kpi-icon">⚙️</div></div>
+      <div class="kpi-val" style="font-size:28px;padding-top:10px">HOLD</div>
+      <div class="kpi-sub">No activity this week</div>
+      <div class="kpi-bar"></div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-ey">rWPQT — OD &amp; Stop/Start Simulated Repair</div>
+      <div class="card-title">Pipe 26.4.2128 — Approved (w/ note)</div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-dot" style="--dc:var(--muted)"></div><div class="tl-year">Scope</div><div class="tl-title">Stop/Start + Deep + Shallow SMAW</div><div class="tl-desc">Internal forced stop 1760×650 · External 11480×650<br>WPS Deep EPR-F4-0266 (&gt;0.7×WT) · Shallow EPR-F4-0265 (≤8 mm)</div></div>
+        <div class="tl-item"><div class="tl-dot" style="--dc:var(--green)"></div><div class="tl-year">Macrographic</div><div class="tl-title">Performed &amp; approved</div><span class="tl-badge done">Approved</span></div>
+        <div class="tl-item"><div class="tl-dot" style="--dc:var(--green)"></div><div class="tl-year">Guided Side Bend</div><div class="tl-title">Performed &amp; approved</div><span class="tl-badge done">Approved</span></div>
+        <div class="tl-item"><div class="tl-dot" style="--dc:var(--amber)"></div><div class="tl-year">CVN — Border Line</div><div class="tl-title">ID Stop/Start middle weld</div><div class="tl-desc">Results: 46 J · 48 J · 47 J — <b style="color:var(--amber)">avg 47 J</b> (border line). Approved with note.</div><span class="tl-badge active">Approved · Note</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-ey">rWPQT — ID Simulated Repair</div>
+      <div class="card-title">Pipe 26.4.2205 — On Hold</div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-dot" style="--dc:var(--muted)"></div><div class="tl-year">25 Apr 2026</div><div class="tl-title">Cavities opened</div><div class="tl-desc">12 cavities: 8 Deep + 4 Shallow (ID SMAW)</div></div>
+        <div class="tl-item"><div class="tl-dot" style="--dc:var(--muted)"></div><div class="tl-year">4–12 May 2026</div><div class="tl-title">SMAW ID welding</div><div class="tl-desc">1 extra Deep cavity added (Tenaris option) — Plate 8 parameters witnessed</div><span class="tl-badge done">Done</span></div>
+        <div class="tl-item"><div class="tl-dot" style="--dc:var(--amber)"></div><div class="tl-year">Week 25</div><div class="tl-title">No activity performed this week</div><div class="tl-desc">No activities on the ID Simulated Repair Qualification during these weekly visits.</div><span class="tl-badge active">Hold</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card g1">
+    <div class="card-ey">MPQT / WPQT — Lab Tests Color Legend</div>
+    <div class="card-title">Status Legend (Weekly Table)</div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:8px;background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.2);border-radius:6px;padding:8px 14px;"><div style="width:11px;height:11px;border-radius:3px;background:#00e676;"></div><span style="font-size:11px;color:var(--text)">Performed &amp; Approved</span></div>
+      <div style="display:flex;align-items:center;gap:8px;background:rgba(255,202,40,.07);border:1px solid rgba(255,202,40,.2);border-radius:6px;padding:8px 14px;"><div style="width:11px;height:11px;border-radius:3px;background:#ffca28;"></div><span style="font-size:11px;color:var(--text)">Border Line Result</span></div>
+      <div style="display:flex;align-items:center;gap:8px;background:rgba(255,71,87,.07);border:1px solid rgba(255,71,87,.2);border-radius:6px;padding:8px 14px;"><div style="width:11px;height:11px;border-radius:3px;background:#ff4757;"></div><span style="font-size:11px;color:var(--text)">Performed &amp; Rejected</span></div>
+      <div style="display:flex;align-items:center;gap:8px;background:rgba(0,168,255,.07);border:1px solid rgba(0,168,255,.2);border-radius:6px;padding:8px 14px;"><div style="width:11px;height:11px;border-radius:3px;background:#00a8ff;"></div><span style="font-size:11px;color:var(--text)">Long Duration — Started</span></div>
+      <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;padding:8px 14px;"><div style="width:11px;height:11px;border-radius:3px;background:var(--muted);"></div><span style="font-size:11px;color:var(--text)">To Be Performed</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LAB TESTS ===== -->
+<div id="lab" class="tab-content">
+  <div class="sl">Laboratory Tests — Mass Production</div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-ey">CTOD — 1st Campaign</div>
+      <div class="card-title">Finalised (CPY request)</div>
+      <div style="display:flex;gap:14px;margin-bottom:14px;">
+        <div style="flex:1;text-align:center;background:var(--s2);border-radius:8px;padding:14px"><div style="font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:4px">SAMPLE 1</div><div style="font-size:26px;font-weight:800;color:var(--green)">1.09</div><div style="font-size:9px;color:var(--muted)">mm</div></div>
+        <div style="flex:1;text-align:center;background:var(--s2);border-radius:8px;padding:14px"><div style="font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:4px">SAMPLE 2</div><div style="font-size:26px;font-weight:800;color:var(--green)">0.92</div><div style="font-size:9px;color:var(--muted)">mm</div></div>
+        <div style="flex:1;text-align:center;background:var(--s2);border-radius:8px;padding:14px"><div style="font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:4px">SAMPLE 3</div><div style="font-size:26px;font-weight:800;color:var(--green)">0.62</div><div style="font-size:9px;color:var(--muted)">mm</div></div>
+      </div>
+      <div style="background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.15);border-radius:6px;padding:10px 14px"><div style="font-size:11px;color:var(--muted);line-height:1.6">CTOD requested by CPY for the 1st campaign — finalised this week.</div></div>
+    </div>
+    <div class="card">
+      <div class="card-ey">Base Metal Longitudinal Tensile</div>
+      <div class="card-title">10 Heats Tested — 1 Rejected</div>
+      <div class="ncr-item" style="margin-bottom:0">
+        <div class="ncr-num">REJECTED · LONGITUDINAL TENSILE</div>
+        <div class="ncr-title">Pipe 26.4.7993 · Heat 780992</div>
+        <div class="ncr-desc">RT0.5 / Rm = <b style="color:var(--red)">0.94</b> — rejected. 9 of 10 heats tested satisfactory.</div>
+      </div>
+      <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.7">Full numeric results are recorded in the “Sakarya Inspection Overall Status as of 06.20.2026” lab tables (PDF attached).</div>
+    </div>
+  </div>
+
+  <div class="tw">
+    <div class="tbar"><div class="tbar-title">CVN — Rejected at Fusion Line (OD / ID / Root) · Week 25</div></div>
+    <table>
+      <thead><tr><th>Pipe Number</th><th>Heat Number</th><th>Fusion Line</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td style="font-family:'JetBrains Mono',monospace">26.4.7858</td><td>801219</td><td>Root FL</td><td><span class="badge br">Rejected</span></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace">26.4.7816</td><td>975002</td><td>ID FL</td><td><span class="badge br">Rejected</span></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace">26.4.7974</td><td>780993</td><td>OD FL</td><td><span class="badge br">Rejected</span></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace">26.4.8032</td><td>780995</td><td>OD FL</td><td><span class="badge br">Rejected</span></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace">26.4.7804</td><td>974992</td><td>OD FL</td><td><span class="badge br">Rejected</span></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace">26.4.7804</td><td>974992</td><td>Root FL</td><td><span class="badge br">Rejected</span></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace">26.4.7998</td><td>780992</td><td>Root FL</td><td><span class="badge br">Rejected</span></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace">26.4.8053</td><td>780991</td><td>Root FL</td><td><span class="badge br">Rejected</span></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace">26.4.8053</td><td>780991</td><td>OD FL</td><td><span class="badge br">Rejected</span></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace">26.4.7990</td><td>780992</td><td>ID FL</td><td><span class="badge br">Rejected</span></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace">26.4.8136</td><td>800959</td><td>OD FL</td><td><span class="badge br">Rejected</span></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace">26.4.8216</td><td>801174</td><td>OD FL</td><td><span class="badge br">Rejected</span></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace">26.4.8186</td><td>801174</td><td>ID FL</td><td><span class="badge br">Rejected</span></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace">26.4.7920</td><td>800943</td><td>ID FL</td><td><span class="badge br">Rejected</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="font-size:10px;color:var(--muted);padding:0 4px">CVN re-started this week; a complete heat set was not tested. Per-specimen Joule values are in the weekly lab table. CVN Early-Pipe failures are tracked under NCR-004.</div>
+</div>
+
+<!-- ===== AREAS OF CONCERN ===== -->
+<div id="concerns" class="tab-content">
+  <div class="sl">Areas of Concern — Steel Damage (3 Points)</div>
+
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi g-amber">
+      <div class="kpi-top"><div class="kpi-label">“U” Press Mark</div><div class="kpi-icon">🛠</div></div>
+      <div class="kpi-val">63</div>
+      <div class="kpi-sub">Pipes identified · 18 rejected</div>
+      <div class="kpi-bar"></div>
+    </div>
+    <div class="kpi g-amber">
+      <div class="kpi-top"><div class="kpi-label">Bolt Mark</div><div class="kpi-icon">🔩</div></div>
+      <div class="kpi-val">5</div>
+      <div class="kpi-sub">Pipes (1 rejected) · 18 plates</div>
+      <div class="kpi-bar"></div>
+    </div>
+    <div class="kpi g-amber">
+      <div class="kpi-top"><div class="kpi-label">Stamp Damage</div><div class="kpi-icon">🔻</div></div>
+      <div class="kpi-val">46</div>
+      <div class="kpi-sub">Pipes (3 rejected) · 8 plates rejected</div>
+      <div class="kpi-bar"></div>
+    </div>
+  </div>
+
+  <div class="card g1">
+    <div class="card-ey">Pipe / Plate Steel Damage</div>
+    <div class="card-title">Visual &amp; Dimensional — Plate Entrance / Station 1</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:16px">
+      During Visual and Dimensional Inspection at plate entrance and Dimensional Station 1, a deep internal surface mark was noted on the base metal — around mid pipe length, opposite the weld bead, ~180° from the weld seam, depth <b style="color:var(--text)">3–5 mm</b>. Identified as caused by the “U” press, from a foreign material melted onto the press surface.
+      Two further mechanical-damage types noted: a “bolt” aspect and stamp damage on the ID pipe surface.
+    </div>
+    <div class="tw" style="margin-bottom:16px">
+      <table>
+        <thead><tr><th>Damage Type</th><th>Pipes Identified</th><th>Pipes Rejected</th><th>On Line (no rework)</th><th>Plates</th></tr></thead>
+        <tbody>
+          <tr><td>“U” Press Mark</td><td>63</td><td><span class="badge br">18</span></td><td>—</td><td>—</td></tr>
+          <tr><td>Bolt Mark</td><td>5</td><td><span class="badge br">1</span></td><td>—</td><td>18 identified</td></tr>
+          <tr><td>Stamp Damage</td><td>46</td><td><span class="badge br">3</span></td><td>43</td><td>8 rejected → TAB</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:rgba(255,202,40,.05);border:1px solid rgba(255,202,40,.15);border-radius:8px;padding:14px 16px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--amber);letter-spacing:2px;margin-bottom:6px">📧 ACTION</div>
+      <div style="font-size:11px;color:var(--text);line-height:1.6">An email was sent to Tenaris requesting traceability control for the above damages. In addition, the TPI team created an Excel table with their own data to control these situations. The 8 rejected plates will be used by Tenaris as TABs.</div>
+    </div>
+  </div>
+
+  <div class="card g1">
+    <div class="card-ey">Dimensional — LEMS</div>
+    <div class="card-title">Out-of-Roundness (OoR)</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.7">During the first week of LEMS operation, a large number of OoR values were found outside specification. Jacking process started on the OoR-rejected pipes; straightness re-work started this Week 25 and is ongoing.</div>
+  </div>
+</div>
+
+<!-- ===== NCR REGISTER ===== -->
+<div id="ncr" class="tab-content">
+  <div class="sl">Non-Conformance Register — 12 Tracked</div>
+
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi g-red"><div class="kpi-top"><div class="kpi-label">Open NCRs</div><div class="kpi-icon">🔴</div></div><div class="kpi-val">7</div><div class="kpi-sub">Requiring disposition</div><div class="kpi-bar"></div></div>
+    <div class="kpi g-green"><div class="kpi-top"><div class="kpi-label">Closed NCRs</div><div class="kpi-icon">✅</div></div><div class="kpi-val">5</div><div class="kpi-sub">Disposition complete</div><div class="kpi-bar"></div></div>
+    <div class="kpi g-purple"><div class="kpi-top"><div class="kpi-label">Total Tracked</div><div class="kpi-icon">📋</div></div><div class="kpi-val">12</div><div class="kpi-sub">All NCRs this campaign</div><div class="kpi-bar"></div></div>
+  </div>
+
+  <div class="tw">
+    <div class="tbar"><div class="tbar-title">NCR Register — Raised / Closed</div></div>
+    <table>
+      <thead><tr><th>NCR</th><th>Description</th><th>Raised</th><th>Closed</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>01</td><td>MPQT Burn Through</td><td>02.12.2026</td><td>03.26.2026</td><td><span class="badge bg">Closed</span></td></tr>
+        <tr><td>02</td><td>MPQT &amp; Early Pipes Bevel Profile Damage</td><td>02.14.2026</td><td>04.21.2026</td><td><span class="badge bg">Closed</span></td></tr>
+        <tr><td>03</td><td>CVN and Tensile MPQT Failure</td><td>03.09.2026</td><td>04.14.2026</td><td><span class="badge bg">Closed</span></td></tr>
+        <tr><td>04</td><td>CVN Early Pipe Failure (Heat Frequency)</td><td>04.15.2026</td><td>—</td><td><span class="badge br">Open</span></td></tr>
+        <tr><td>05</td><td>3LPP PQT Pipe damaged at Cutback Brush</td><td>04.28.2026</td><td>05.19.2026</td><td><span class="badge bg">Closed</span></td></tr>
+        <tr><td>06</td><td>3LPP Early Batch Elongation Rejection</td><td>04.29.2026</td><td>—</td><td><span class="badge br">Open</span></td></tr>
+        <tr><td>07</td><td>Slotted Pipe N° 26.4.2195 (9 Slots)</td><td>05.18.2026</td><td>05.19.2026</td><td><span class="badge bg">Closed</span></td></tr>
+        <tr><td>08</td><td>Tensile Strength 60 °C (extruded &amp; from pipe)</td><td>05.26.2026</td><td>—</td><td><span class="badge br">Open</span></td></tr>
+        <tr><td>09</td><td>Tack Weld Parameters out of Qualified</td><td>06.11.2026</td><td>—</td><td><span class="badge br">Open</span></td></tr>
+        <tr><td>10</td><td>NDT Tenaris Inspector (ASNT × ISO)</td><td>06.15.2026</td><td>—</td><td><span class="badge br">Open</span></td></tr>
+        <tr><td>11</td><td>Mechanical Marking at Pipe ID</td><td>06.15.2026</td><td>—</td><td><span class="badge br">Open</span></td></tr>
+        <tr><td>12</td><td>Mechanical Cold Expansion Rate</td><td>06.15.2026</td><td>—</td><td><span class="badge br">Open</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="font-size:10px;color:var(--muted);padding:0 4px">NCRs 10–12 newly raised on 06.15.2026 (this week). Repair &amp; Rejection pipe traceability tracked in the “Sakarya Inspection Overall Status as of 06.20.2026”.</div>
+</div>
+
+<!-- ===== PROJECT INFO ===== -->
+<div id="project" class="tab-content">
+  <div class="sl">Project &amp; Contract Details</div>
+
+  <div class="info-grid">
+    <div class="info-card a1"><div class="info-label">Project</div><div class="info-val">Sakarya Gas Field Development</div><div class="info-sub">Phase 3</div></div>
+    <div class="info-card a2"><div class="info-label">Client</div><div class="info-val">Saipem S.p.A.</div><div class="info-sub">COMP3 — Qatar Gas</div></div>
+    <div class="info-card a3"><div class="info-label">Manufacturer</div><div class="info-val">Tenaris Confab</div><div class="info-sub">Pindamonhangaba, Brazil</div></div>
+    <div class="info-card a4"><div class="info-label">IQS Inspectors</div><div class="info-val">Pedro Eugenio · Elbert Morais</div><div class="info-sub">+ Kayan Silva · R. Honorato · J. Antônio · M. Larangeira · J. Paulo</div></div>
+    <div class="info-card a5"><div class="info-label">Report Document</div><div class="info-val">SC26-3-SPM-CNF-DPR-020</div><div class="info-sub">Weekly Inspection Report — Week 25</div></div>
+    <div class="info-card a6"><div class="info-label">Job No. / PO</div><div class="info-val">033781</div><div class="info-sub">PO 1534963 dtd. 21.10.2025</div></div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card a1"><div class="info-label">Material</div><div class="info-val">UOE SAWL · OD 609.6 × WT 32.2 mm</div><div class="info-sub">DNV 450 FSDU · DNV-ST-F101</div></div>
+    <div class="info-card a2"><div class="info-label">MPS</div><div class="info-val">SC26-3-CNF-GEP-MN-MPS-707004 R01</div><div class="info-sub">Manufacturing Procedure Specification · 12.12.2025</div></div>
+    <div class="info-card a3"><div class="info-label">ITP (Pipe Mill)</div><div class="info-val">SC26-3-CNF-GEP-MN-ITP-707005 R01</div><div class="info-sub">Inspection &amp; Test Plan · 18.12.2025</div></div>
+    <div class="info-card a4"><div class="info-label">NDT Procedure</div><div class="info-val">SC26-3-CNF-GEP-ND-PRO-707008</div><div class="info-sub">Non-destructive examination · 14.10.2025</div></div>
+    <div class="info-card a5"><div class="info-label">Dim. &amp; Visual / Traceability</div><div class="info-val">PRO-707009 R02 · PRO-707013 R02</div><div class="info-sub">Dimensional/Visual + Material Traceability</div></div>
+    <div class="info-card a6"><div class="info-label">Welding Procedures</div><div class="info-val">SC26-3-CNF-GEP-WE-PRO-707006 R01</div><div class="info-sub">pWPS + Weld Repair WPS · 19.12.2025</div></div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-ey">Material</div>
+      <div class="card-title">Pipe Dimensions &amp; Grade</div>
+      <table style="font-size:11px">
+        <tr><td style="padding:8px 0;color:var(--muted);width:160px">Type</td><td style="color:var(--text)">UOE SAWL</td></tr>
+        <tr><td style="padding:8px 0;border-top:1px solid var(--border);color:var(--muted)">OD</td><td style="border-top:1px solid var(--border);color:var(--text)">609.6 mm</td></tr>
+        <tr><td style="padding:8px 0;border-top:1px solid var(--border);color:var(--muted)">Wall Thickness</td><td style="border-top:1px solid var(--border);color:var(--text)">32.2 mm</td></tr>
+        <tr><td style="padding:8px 0;border-top:1px solid var(--border);color:var(--muted)">Grade</td><td style="border-top:1px solid var(--border);color:var(--text)">DNV 450 · FSDU</td></tr>
+        <tr><td style="padding:8px 0;border-top:1px solid var(--border);color:var(--muted)">Welding process</td><td style="border-top:1px solid var(--border);color:var(--text)">SAWL (Submerged Arc)</td></tr>
+        <tr><td style="padding:8px 0;border-top:1px solid var(--border);color:var(--muted)">Contract date</td><td style="border-top:1px solid var(--border);color:var(--text)">21.10.2025</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-ey">Calibration</div>
+      <div class="card-title">Instruments &amp; Equipment</div>
+      <div style="background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.15);border-radius:8px;padding:14px 16px;margin-bottom:12px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--green);letter-spacing:2px;margin-bottom:5px">✔ ALL CALIBRATED</div>
+        <div style="font-size:11px;color:var(--text);line-height:1.6">All instruments and equipment used during these weekly qualification/production activities have valid calibration dates, verified during inspection.</div>
+      </div>
+      <a href="https://fanatics-hue.github.io/sakarya-dashboard/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,168,255,.08);border:1px solid rgba(0,168,255,.2);border-radius:8px;padding:10px 18px;color:var(--blue);text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;transition:background .2s" onmouseover="this.style.background='rgba(0,168,255,.15)'" onmouseout="this.style.background='rgba(0,168,255,.08)'">
+        🔗 SAKARYA DASHBOARD — fanatics-hue.github.io
+      </a>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="footer-left">IQS S.r.l. · SC26-3-SPM-CNF-DPR-020 · PIPE MILL · WEEK 25 · JUN 2026 · TENARIS CONFAB · PINDAMONHANGABA, BRAZIL</div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div class="iqs-logo">IQS</div>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)">obo SAIPEM</span>
+  </div>
+</footer>
+
+</div>
+
+<script>
+function showTab(id, el) {
+  document.querySelectorAll('.tab-content').forEach(function(t) {
+    t.classList.remove('active');
+    t.style.display = 'none';
+  });
+  document.querySelectorAll('.tab').forEach(function(t) {
+    t.classList.remove('active');
+  });
+  var target = document.getElementById(id);
+  if (target) { target.classList.add('active'); target.style.display = 'block'; }
+  if (el) el.classList.add('active');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var active = document.querySelector('.tab-content.active');
+  if (active) active.style.display = 'block';
+  document.querySelectorAll('.tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      var m = (tab.getAttribute('onclick') || '').match(/showTab\('([^']+)'/);
+      if (m) showTab(m[1], tab);
+    });
+  });
+});
+</script>
+</body>
+</html>

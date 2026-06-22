@@ -1,0 +1,11 @@
+*.xlsx
+*.xlsm
+*.doc
+*.docx
+*.pdf
+*.txt
+__pycache__/
+*.pyc
+.DS_Store
+desktop.ini
+.claude/
